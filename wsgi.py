@@ -2,9 +2,11 @@ import json
 import os
 
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['MAIL_SERVER'] = os.environ['MAIL_SERVER']
 app.config['MAIL_PORT'] = int(os.environ['MAIL_PORT'])
@@ -16,6 +18,7 @@ mail = Mail(app)
 
 
 @app.route("/", methods=['GET'])
+@cross_origin()
 def index():
     return app.response_class(
         response=json.dumps({'message': 'All is well!'}),
@@ -25,6 +28,7 @@ def index():
 
 
 @app.route("/message", methods=['POST'])
+@cross_origin()
 def post_message():
     request_data = request.get_json()
     message = Message(f"Website message from {request_data['name']}",
