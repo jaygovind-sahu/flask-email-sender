@@ -28,8 +28,8 @@ def index():
 def post_message():
     request_data = request.get_json()
     message = Message(f"Website message from {request_data['name']}",
-                      sender=os.environ['mailuser'],
-                      recipients=[os.environ['mailuser']])
+                      sender=os.environ['MAIL_USERNAME'],
+                      recipients=[os.environ['MAIL_USERNAME']])
     message.body = f"{request_data['message']}\n\n{request_data['name']}\n{request_data['email']}"
     mail.send(message)
     return app.response_class(
