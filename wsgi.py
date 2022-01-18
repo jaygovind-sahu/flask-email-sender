@@ -32,9 +32,9 @@ def index():
 @cross_origin()
 def post_message():
     request_data = request.get_json()
-    if not ('name' in request_data and 'email' in request_data and 'message' in request_data):
+    if not (request_data.get('name', '') or request_data.get('email', '') or request_data.get('message', '')):
         return app.response_class(
-            response=json.dumps({'message': 'Email, name and message should be present.'}),
+            response=json.dumps({'message': 'Fields validation failed.'}),
             status=400,
             mimetype='application/json'
         )
