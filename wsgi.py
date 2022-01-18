@@ -32,6 +32,12 @@ def index():
 @cross_origin()
 def post_message():
     request_data = request.get_json()
+    if not ('name' in request_data and 'email' in request_data and 'message' in request_data):
+        return app.response_class(
+            response=json.dumps({'message': 'Email, name and message should be present.'}),
+            status=400,
+            mimetype='application/json'
+        )
     message = Message(f"Website message from {request_data['name']}",
                       sender=os.environ['MAIL_USERNAME'],
                       recipients=[os.environ['MAIL_USERNAME']])
