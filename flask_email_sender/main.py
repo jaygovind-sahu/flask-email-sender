@@ -1,6 +1,7 @@
+import json
 import os
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
 
@@ -19,7 +20,7 @@ mail = Mail(app)
 @app.route("/", methods=['GET'])
 def index():
     response = app.response_class(
-        response=jsonify({'message': 'All is well!'}),
+        response=json.dumps({'message': 'All is well!'}),
         status=200,
         mimetype='application/json'
     )
@@ -33,7 +34,7 @@ def post_message():
     request_data = request.get_json()
     if not (request_data.get('name', '') or request_data.get('email', '') or request_data.get('message', '')):
         return app.response_class(
-            response=jsonify({'error': 'Fields validation failed.'}),
+            response=json.dumps({'error': 'Fields validation failed.'}),
             status=400,
             mimetype='application/json'
         )
@@ -43,7 +44,7 @@ def post_message():
     message.body = f"{request_data['message']}\n\n{request_data['name']}\n{request_data['email']}"
     mail.send(message)
     return app.response_class(
-        response=jsonify({'message': 'Message sent!'}),
+        response=json.dumps({'message': 'Message sent!'}),
         status=200,
         mimetype='application/json'
     )
