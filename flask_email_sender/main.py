@@ -32,7 +32,7 @@ def index():
 @cross_origin()
 def post_message():
     request_data = request.get_json()
-    if not (request_data.get('name', '') or request_data.get('email', '') or request_data.get('message', '')):
+    if not (request_data.get('name', '') and request_data.get('email', '') and request_data.get('message', '')):
         return app.response_class(
             response=json.dumps({'error': 'Fields validation failed.'}),
             status=400,
